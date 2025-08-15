@@ -1,0 +1,5696 @@
+openapi: 3.0.0
+info:
+  title: Yomart API
+  description: Server API for Yomart
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Local server
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    CustomerGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: ID của nhóm khách hàng
+        name:
+          type: string
+          description: Tên của nhóm khách hàng
+          example: "Nhóm 1"
+        publish:
+          type: boolean
+          description: Trạng thái công khai của nhóm khách hàng
+          example: true
+        code:
+          type: string
+          description: Mã nhóm khách hàng, không bắt buộc
+          example: "ABC12345"
+        is_default:
+          type: boolean
+          description: Nhóm khách hàng mặc định
+          example: false
+
+    SupplierGroup:
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: ID của nhóm nhà cung cấp
+        code:
+          type: string
+          description: Mã nhóm nhà cung cấp, không bắt buộc
+          example: "ABC12345"
+        name:
+          type: string
+          description: Tên của nhóm nhà cung cấp
+          example: "Nhóm 1"
+        publish:
+          type: boolean
+          description: Trạng thái công khai của nhóm nhà cung cấp
+          example: true
+
+    Order:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Mã đơn hàng
+          example: "Y0000001"
+        name:
+          type: string
+          description: Tên khách hàng
+          example: "Nguyễn Văn A"
+        phone:
+          type: string
+          description: Số điện thoại khách hàng
+          example: "0123456789"
+        customer_id:
+          type: integer
+          description: ID của khách hàng đặt hàng
+          example: 1
+        city_id:
+          type: integer
+          description: ID thành phố
+          example: 1
+        district_id:
+          type: integer
+          description: ID quận/huyện
+          example: 1
+        ward_id:
+          type: integer
+          description: ID phường/xã
+          example: 1
+        address:
+          type: string
+          description: Địa chỉ giao hàng
+          example: "123 Đường ABC"
+        des:
+          type: string
+          description: Ghi chú đơn hàng
+          example: "Giao hàng vào buổi sáng"
+        order_details:
+          type: array
+          items:
+            $ref: "#/components/schemas/OrderItem"
+
+    OrderItem:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          description: ID sản phẩm
+          example: 456
+        quantity:
+          type: integer
+          description: Số lượng sản phẩm
+          example: 2
+        price:
+          type: number
+          description: Giá của sản phẩm tại thời điểm mua
+          example: 120000
+        price_wholesale:
+          type: number
+          description: Giá sỉ của sản phẩm tại thời điểm mua
+          example: 100000
+
+    Product:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Mã sản phẩm
+          example: "SP000001"
+        name:
+          type: string
+          description: Tên sản phẩm
+          example: "Áo thun nam"
+        price:
+          type: number
+          description: Giá bán lẻ
+          example: 120000
+        price_wholesale:
+          type: number
+          description: Giá bán sỉ
+          example: 100000
+        price_import:
+          type: number
+          description: Giá nhập
+          example: 80000
+        branch_id:
+          type: integer
+          description: ID chi nhánh
+          example: 1
+        product_type_id:
+          type: integer
+          description: ID loại sản phẩm
+          example: 1
+        description:
+          type: string
+          description: Mô tả sản phẩm
+          example: "Áo thun nam chất liệu cotton 100%"
+        is_sell:
+          type: boolean
+          description: Sản phẩm có bán không
+          example: true
+        unit_id:
+          type: integer
+          description: ID đơn vị tính
+          example: 1
+        weight:
+          type: number
+          description: Trọng lượng sản phẩm
+          example: 0.2
+        publish:
+          type: boolean
+          description: Trạng thái công khai của sản phẩm
+          example: true
+
+    Customer:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Mã khách hàng
+          example: "KH000001"
+        phone:
+          type: string
+          description: Số điện thoại khách hàng
+          example: "0123456789"
+        name:
+          type: string
+          description: Tên khách hàng
+          example: "Nguyễn Văn A"
+        email:
+          type: string
+          description: Email khách hàng
+          example: ""
+        type:
+          type: string
+          description: Loại khách hàng
+          example: "Cá nhân"
+        group_id:
+          type: integer
+          description: ID nhóm khách hàng
+          example: 1
+        publish:
+          type: boolean
+          description: Trạng thái công khai của khách hàng
+          example: true
+        birthdate:
+          type: string
+          description: Ngày sinh khách hàng
+          example: ""
+        gender:
+          type: string
+          description: Giới tính khách hàng
+          example: "0 Nam, 1 Nữ, 2 Khác"
+        tax_code:
+          type: string
+          description: Mã số thuế khách hàng
+          example: ""
+        city_id:
+          type: integer
+          description: ID thành phố
+          example: 1
+        district_id:
+          type: integer
+          description: ID quận/huyện
+          example: 1
+        ward_id:
+          type: integer
+          description: ID phường/xã
+          example: 1
+        address:
+          type: string
+          description: Địa chỉ khách hàng
+          example: "123 Đường ABC"
+
+    Supplier:
+      type: object
+      properties:
+        phone:
+          type: string
+          description: Số điện thoại nhà cung cấp
+          example: "0123456789"
+        name:
+          type: string
+          description: Tên nhà cung cấp
+          example: "Công ty TNHH A"
+        email:
+          type: string
+          description: Email nhà cung cấp
+          example: ""
+        group_id:
+          type: integer
+          description: ID nhóm nhà cung cấp
+          example: 1
+        address:
+          type: string
+          description: Địa chỉ nhà cung cấp
+          example: "123 Đường ABC"
+        status:
+          type: boolean
+          description: Trạng thái nhà cung cấp
+          example: true
+        city_id:
+          type: integer
+          description: ID thành phố
+          example: 1
+        district_id:
+          type: integer
+          description: ID quận/huyện
+          example: 1
+        ward_id:
+          type: integer
+          description: ID phường/xã
+          example: 1
+
+    Brand:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Tên thương hiệu
+          example: "Thương hiệu A"
+        publish:
+          type: boolean
+          description: Trạng thái của thuơng hiệu
+          example: true
+
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          description: Tên đăng nhập
+          example: "admin"
+        password:
+          type: string
+          description: Mật khẩu
+          example: "ABC12345"
+        name:
+          type: string
+          description: Tên người dùng
+          example: "Nguyễn Văn ABC"
+        email:
+          type: string
+          description: Email người dùng
+          example: "  "
+        phone:
+          type: string
+          description: Số điện thoại người dùng
+          example: "0123456789"
+        active:
+          type: boolean
+          description: Trạng thái hoạt động
+          example: true
+
+    UserAddress:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Tên địa chỉ
+          example: "Anh B"
+        phone:
+          type: string
+          description: Số điện thoại
+          example: "0123456789"
+        city_id:
+          type: integer
+          description: ID thành phố
+          example: 1
+        district_id:
+          type: integer
+          description: ID quận/huyện
+          example: 1
+        ward_id:
+          type: integer
+          description: ID phường/xã
+          example: 1
+        address:
+          type: string
+          description: Địa chỉ
+          example: "123 Đường ABC"
+        customer_id:
+          type: integer
+          description: ID khách hàng
+          example: 1
+        is_default:
+          type: boolean
+          description: Địa chỉ mặc định
+          example: true
+
+
+    ProductUnit:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Tên đơn vị tính
+          example: "Cái"
+        publish:
+          type: boolean
+          description: "Trạng thái công khai"
+          example: true
+
+
+    Module:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Tên module
+          example: "Supplier"
+        publish:
+          type: boolean
+          description: "Trạng thái công khai"
+          example: true
+
+
+    ProductType:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Loại sản phẩm
+          example: "Áo thun"
+        publish:
+          type: boolean
+          description: "Trạng thái công khai"
+          example: true
+
+
+    Role:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Tên quyền
+          example: "Admin"
+        publish:
+          type: boolean
+          description: "Trạng thái công khai"
+          example: true
+
+    Branch:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+          description: ID chi nhánh
+        name:
+          type: string
+          description: Tên của chi nhánh
+          example: "Nhóm 1"
+        publish:
+          type: boolean
+          description: Trạng thái công khai 
+          example: true
+        code:
+          type: string
+          description: Mã chi nhánh, không bắt buộc
+          example: "ABC12345"
+        is_default:
+          type: boolean
+          description: Chi nhánh mặc định
+          example: false
+
+    DeliveryNote:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Mã phiếu nhập
+          example: "PN000001"
+        delivery_note_detail:
+          type: array
+          items:
+            $ref: "#/components/schemas/DeliveryNoteDetail"
+
+
+    DeliveryNoteDetail:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          description: ID sản phẩm
+          example: 1
+        qty:
+          type: integer
+          description: Số lượng sản phẩm
+          example: 10
+
+
+
+
+    City:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Tên thành phố
+          example: "HCM"
+        publish:
+          type: boolean
+          description: "Trạng thái công khai"
+          example: true
+
+
+    District:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Tên quận/huyện
+          example: "Quận 1"
+        publish: 
+          type: boolean
+          description: "Trạng thái công khai"
+          example: true
+        city_id:
+          type: integer
+          description: ID thành phố
+          example: 1
+    
+    Ward:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Tên phường/xã
+          example: "Phường 1"
+        publish:
+          type: boolean
+          description: "Trạng thái công khai"
+          example: true
+        district_id:
+          type: integer
+          description: ID quận/huyện
+          example: 1
+
+
+          
+    OrderDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID chi tiết đơn hàng
+          example: 1
+        order_id:
+          type: integer
+          description: ID đơn hàng
+          example: 1
+        product_id:
+          type: integer
+          description: ID sản phẩm
+          example: 1
+        quantity:
+          type: integer
+          description: Số lượng sản phẩm
+          example: 10
+        price:
+          type: number
+          description: Giá sản phẩm
+          example: 100000
+        publish:
+          type: number
+          description: Trạng thái công khai
+          example: 1
+        created_id:
+          type: number
+          description: ID người tạo
+          example: 1
+        price_wholesale:
+          type: number
+          description: Giá sỉ
+          example: 90000
+
+
+    ProductCommission:
+      type: object
+      properties:
+        product_id:
+          type: integer
+          description: ID sản phẩm
+          example: 1
+        commission:
+          type: number
+          description: Hoa hồng
+          example: 10
+        publish:
+          type: boolean
+          description: Trạng thái công khai
+          example: true
+        created_id:
+          type: integer
+          description: ID người dùng
+          example: 1
+
+    
+
+paths:
+  /auth/login:
+    post:
+      summary: Đăng nhập
+      operationId: login
+      tags:
+        - Authentication
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  format: username
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Đăng nhập thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+
+  /auth/change-password:
+    put:
+      summary: Đổi mật khẩu
+      operationId: changePassword
+      tags:
+        - Authentication
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                newPassword:
+                  type: string
+      responses:
+        "200":
+          description: Đổi mật khẩu thành công
+  
+  /auth/refresh-token:
+    post:
+      summary: Làm mới token
+      operationId: refreshToken
+      tags:
+        - Authentication
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Làm mới token thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  refreshToken:
+                    type: 
+                    
+
+  /auth/logout:
+    post:
+      summary: Đăng xuất
+      operationId: logout
+      tags:
+        - Authentication
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Đăng xuất thành công
+
+  /customer-groups:
+    get:
+      summary: Tìm kiếm và lọc danh sách nhóm khách hàng
+      operationId: getCustomerGroup
+      tags:
+        - Customer Group
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Tên nhóm khách hàng để tìm kiếm
+          schema:
+            type: string
+        - name: publish
+          in: query
+          description: Trạng thái công khai của nhóm khách hàng
+          schema:
+            type: boolean
+        - name: code
+          in: query
+          description: Mã nhóm khách hàng
+          schema:
+            type: string
+        - name: is_default
+          in: query
+          description: Chỉ định xem nhóm khách hàng có phải là mặc định hay không
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CustomerGroup"
+
+    post:
+      summary: Tạo mới nhóm khách hàng
+      operationId: createCustomerGroup
+      tags:
+        - Customer Group
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CustomerGroup"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerGroup"
+
+  /customer-groups/delete-rows/{id}:
+    delete:
+      summary: Xóa nhiều nhóm khách hàng
+      operationId: deleteCustomerGroups
+      tags:
+        - Customer Group
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /customer-groups/{id}:
+    delete:
+      summary: Xóa
+      operationId: deleteCustomerGroupId
+      tags:
+        - Customer Group
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+    patch:
+      summary: Cập nhật nhóm khách hàng
+      operationId: updateCustomerGroup
+      tags:
+        - Customer Group
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của nhóm khách hàng cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Tên nhóm khách hàng
+                  example: "Nhóm mới"
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai của nhóm khách hàng
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerGroup"
+
+  /customer-groups/findById/{id}:
+    get:
+      summary: Tìm kiếm nhóm khách hàng theo ID
+      operationId: findCustomerGroupById
+      tags:
+        - Customer Group
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của nhóm khách hàng cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Nhóm khách hàng tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerGroup"
+        "404":
+          description: Nhóm khách hàng không tồn tại
+
+  /customer-groups/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái nhóm khách hàng
+      operationId: updateCustomerGroupPublish
+      tags:
+        - Customer Group
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của nhóm khách hàng cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CustomerGroup"
+  /customer-groups/update-list-publish:
+    put:
+      summary: Cập nhật trạng thái nhiều nhóm khách hàng
+      operationId: updateListCustomerGroupPublish
+      tags:
+        - Customer Group
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+
+  /supplier-groups:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getSupplierGroup
+      tags:
+        - Supplier Group
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Tên để tìm kiếm
+          schema:
+            type: string
+        - name: publish
+          in: query
+          description: Trạng thái công khai
+          schema:
+            type: boolean
+        - name: code
+          in: query
+          description: Mã nhóm
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CustomerGroup"
+
+    post:
+      summary: Tạo mới
+      operationId: createSupplierGroup
+      tags:
+        - Supplier Group
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SupplierGroup"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupplierGroup"
+
+  /supplier-groups/delete-rows/{id}:
+    delete:
+      summary: Xóa nhiều
+      operationId: deleteSupplierGroups
+      tags:
+        - Supplier Group
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /supplier-groups/{id}:
+    delete:
+      summary: Xóa
+      operationId: deleteSupplierId
+      tags:
+        - Supplier Group
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+
+    patch:
+      summary: Cập nhật
+      operationId: updateSupplierGroup
+      tags:
+        - Supplier Group
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Tên mới
+                  example: "Nhóm mới"
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupplierGroup"
+
+  /supplier-groups/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: findSupplierGroupById
+      tags:
+        - Supplier Group
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupplierGroup"
+        "404":
+          description: Nhóm khách hàng không tồn tại
+
+  /supplier-groups/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updateSupplierGroupPublish
+      tags:
+        - Supplier Group
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SupplierGroup"
+  /supplier-groups/update-list-publish:
+    put:
+      summary: Cập nhật danh sách trạng thái
+      operationId: updateSupplierGroupPublish
+      tags:
+        - Supplier Group
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+  /orders:
+    get:
+      summary: Lấy danh sách đơn hàng
+      operationId: getOrders
+      tags:
+        - Order
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: Từ khóa tìm kiếm
+          schema:
+            type: string
+        - name: customer_id
+          in: query
+          description: Lọc theo ID khách hàng
+          schema:
+            type: integer
+        - name: status
+          in: query
+          description: Lọc theo trạng thái đơn hàng
+          schema:
+            type: string
+        - name: phone
+          in: query
+          description: Lọc theo số điện thoại khách hàng
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Lọc theo tên khách hàng
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            example: 10
+        - name: page
+          in: query
+          schema:
+            type: integer
+            example: 1
+        - name: fromDate
+          in: query
+          description: Ngày bắt đầu
+          schema:
+            type: string
+            format: date
+        - name: toDate
+          in: query
+          description: Ngày kết thúc
+          schema:
+            type: string
+            format: date
+        - name: date
+          in: query
+          description: Ngày cụ thể
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Trả về danh sách đơn hàng
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Order"
+
+    post:
+      summary: Tạo đơn hàng mới
+      operationId: createOrder
+      tags:
+        - Order
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Order"
+      responses:
+        "201":
+          description: Đơn hàng tạo thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+
+  /orders/findById/{id}:
+    get:
+      summary: Lấy chi tiết đơn hàng
+      operationId: getOrderById
+      tags:
+        - Order
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của đơn hàng
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Trả về chi tiết đơn hàng
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+        "404":
+          description: Không tìm thấy đơn hàng
+
+  /orders/{id}:
+    # delete:
+    #   summary: Xóa
+    #   operationId: deleteOrderId
+    #   tags:
+    #     - Order
+    #   security:
+    #     - BearerAuth: []
+    #   parameters:
+    #     - name: id
+    #       in: path
+    #       required: true
+    #       description: ID cần xóa
+    #       schema:
+    #         type: integer
+    #   responses:
+    #     "200":
+    #       description: Xóa thành công
+
+    # patch:
+    #   summary: Cập nhật đơn hàng
+    #   operationId: updateOrder
+    #   tags:
+    #     - Order
+    #   security:
+    #     - BearerAuth: []
+    #   parameters:
+    #     - name: id
+    #       in: path
+    #       required: true
+    #       description: ID của đơn hàng cần cập nhật
+    #       schema:
+    #         type: integer
+    #   requestBody:
+    #     required: true
+    #     content:
+    #       application/json:
+    #         schema:
+    #           type: object
+    #           properties:
+    #             status:
+    #               type: boolean
+    #               description: Trạng thái đơn hàng
+    #             pay_method:
+    #               type: string
+    #               description: Phương thức thanh toán
+    #             ship_method:
+    #               type: string
+    #               description: Phương thức vận chuyển
+
+    #   responses:
+    #     "200":
+    #       description: Cập nhật đơn hàng thành công
+
+
+
+    patch:
+      summary: Cập nhật trạng thái đơn hàng
+      operationId: updateOrderStatus
+      tags:
+        - Order
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của đơn hàng cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: integer
+                  description: "1 - mới, 2 - duyệt, 3 - đóng gói, 4 - xuất kho, 5 - hoàn thành, 6 - hủy"
+                  example: 1
+                pay_method:
+                  type: integer
+                  description: Phương thức thanh toán
+                  example: 1
+                ship_method:
+                  type: integer
+                  description: Phương thức vận chuyển
+                  example: 1
+                des:
+                  type: string
+                  description: Ghi chú
+                  example: "Giao hàng vào buổi sáng"
+                status_payment:
+                  type: integer
+                  description: "Trạng thái thanh toán - 0: chưa thanh toán, 1: đã thanh toán, 2: chờ thanh toán"
+                  example: 1
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Order"
+
+  /orders/update-info/{id}:
+    patch:
+      summary: Cập nhật thông tin đơn hàng
+      operationId: updateOrderInfo
+      tags:
+        - Order
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của đơn hàng cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                customer_id:
+                  type: integer
+                  description: ID khách hàng
+                  example: 1
+                name:
+                  type: string
+                  description: Tên khách hàng
+                  example: "Nguyễn Văn A"
+                phone:
+                  type: string
+                  description: Số điện thoại khách hàng
+                  example: "0123456789"
+                city_id:
+                  type: integer
+                  description: ID thành phố khách hàng\
+                  example: 1
+                district_id:
+                  type: integer
+                  description: ID quận/huyện khách hàng
+                  example: 1
+                ward_id:
+                  type: integer
+                  description: ID phường/xã khách hàng
+                  example: 1
+                address:
+                  type: string
+                  description: Địa chỉ khách hàng
+                  example: "123 Đường ABC"
+                des:
+                  type: string
+                  description: Ghi chú
+                  example: "Giao hàng vào buổi sáng"
+                pay_method:
+                  type: integer
+                  description: Phương thức thanh toán
+                  example: 1
+                ship_method:
+                  type: integer
+                  description: Phương thức vận chuyển
+                  example: 1
+                order_details:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/OrderDetail"
+      responses:
+        "200":
+          description: Cập nhật thành công
+
+
+
+  /orders/report-status:
+    get:
+      summary: Báo cáo trạng thái đơn hàng
+      operationId: reportOrderStatus
+      tags:
+        - Order
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: fromDate
+          in: query
+          description: Ngày bắt đầu
+          schema:
+            type: string
+            format: date
+        - name: toDate
+          in: query
+          description: Ngày kết thúc
+          schema:
+            type: string
+            format: date
+        - name: date
+          in: query
+          description: Ngày cụ thể
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Trả về báo cáo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+
+  /orders/sale-invoice/{id}:
+    get:
+      summary: Báo cáo hóa đơn bán hàng
+      operationId: saleInvoice
+      tags:
+        - Order
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          description: ID của đơn hàng
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Trả về báo cáo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+  /orders/find-all-commission-by-id:
+    get:
+      summary: Danh sách hoa hồng của nhân viên
+      operationId: getCommissionById
+      tags:
+        - Order
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: query
+          description: ID nhân viên
+          schema:
+            type: integer
+        - name: fromDate
+          in: query
+          description: Ngày bắt đầu
+          schema:
+            type: string
+            format: date
+        - name: toDate
+          in: query
+          description: Ngày kết thúc
+          schema:
+            type: string
+            format: date
+      responses:
+        "200":
+          description: Trả về danh sách hoa hồng
+          content:
+            application/json:
+              schema:
+                type: array
+                # items:
+                  # $ref: "#/components/schemas/Order"
+
+  /orders/update-list-status:
+    put:
+      summary: Cập nhật trạng thái nhiều đơn hàng
+      operationId: updateListOrderStatus
+      tags:
+        - Order
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [600, 500, 400]
+                status:
+                  type: integer
+                  description: "1 - mới, 2 - duyệt, 3 - đóng gói, 4 - xuất kho, 5 - hoàn thành, 6 - hủy"
+                  example: 1
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+
+  /orders/update-list-status-payment:
+    put:
+      summary: Cập nhật trạng thái thanh toán nhiều đơn hàng
+      operationId: updateListOrderPayment
+      tags:
+        - Order
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [600, 500, 400]
+                status_payment:
+                  type: integer
+                  description: "Trạng thái thanh toán - 0: chưa thanh toán, 1: đã thanh toán, 2: chờ thanh toán"
+                  example: 1
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+
+
+# order-details
+  /order-details:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getorder-details
+      tags:
+        - OrderDetail
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OrderDetail"
+    post:
+      summary: Tạo mới
+      operationId: createorder-details
+      tags:
+        - OrderDetail
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OrderDetail"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderDetail"
+  /order-details/delete-rows/{id}:
+    # delete:
+    #   summary: Xóa danh sách
+    #   operationId: deleteorder-details
+    #   tags:
+    #     - OrderDetail
+    #   security:
+    #     - BearerAuth: []
+    #   requestBody:
+    #     required: true
+    #     content:
+    #       application/json:
+    #         schema:
+    #           type: object
+    #           properties:
+    #             listId:
+    #               type: array
+    #               items:
+    #                 type: integer
+    #               example: [1, 2, 3, 4]
+    #   responses:
+    #     "200":
+    #       description: Xóa thành công
+    #       content:
+    #         application/json:
+    #           schema:
+    #             type: object
+    #             properties:
+    #               message:
+    #                 type: string
+    #                 example: "Xóa thành công."
+  /order-details/{id}:
+    # delete:
+    #   summary: Xóa
+    #   operationId: deleteorder-detailsId
+    #   tags:
+    #     - OrderDetail
+    #   security:
+    #     - BearerAuth: []
+    #   parameters:
+    #     - name: id
+    #       in: path
+    #       required: true
+    #       description: ID cần xóa
+    #       schema:
+    #         type: integer
+    #   responses:
+    #     "200":
+    #       description: Xóa thành công
+    patch:
+      summary: Cập nhật
+      operationId: updateorder-details
+      tags:
+        - OrderDetail
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Tên
+                  example: "Tên mới"
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderDetail"
+  /order-details/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: findorder-detailsById
+      tags:
+        - OrderDetail
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderDetail"
+        "404":
+          description: Không tồn tại
+  /order-details/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updateorder-detailsPublish
+      tags:
+        - OrderDetail
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OrderDetail"
+  /order-details/update-list-publish:
+    put:
+      summary: Cập nhật danh sách trạng thái
+      operationId: updateListorder-detailspublish
+      tags:
+        - OrderDetail
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+
+
+
+
+
+  # product
+  /products:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getProduct
+      tags:
+        - Product
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Tên để tìm kiếm
+          schema:
+            type: string
+        - name: publish
+          in: query
+          description: Trạng thái công khai
+          schema:
+            type: boolean
+        - name: code
+          in: query
+          description: Mã nhóm khách hàng
+          schema:
+            type: string
+        - name: is_sell
+          in: query
+          description: Sản phẩm có bán không
+          schema:
+            type: boolean
+        - name: product_type_id
+          in: query
+          description: ID loại sản phẩm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+    post:
+      summary: Tạo mới
+      operationId: createProduct
+      tags:
+        - Product
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+  /products/delete-rows/{id}:
+    delete:
+      summary: Xóa danh sách
+      operationId: deleteProduct
+      tags:
+        - Product
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /products/{id}:
+    delete:
+      summary: Xóa
+      operationId: deleteProductId
+      tags:
+        - Product
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+
+    patch:
+      summary: Cập nhật
+      operationId: updateProduct
+      tags:
+        - Product
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Product"
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+  /products/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: findProductById
+      tags:
+        - Product
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+        "404":
+          description: Không tồn tại
+  /products/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updateProductPublish
+      tags:
+        - Product
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+  /products/update-list-publish:
+    put:
+      summary: Cập nhật danh sách trạng thái
+      operationId: updateListProductPublish
+      tags:
+        - Product
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+  # Customer
+  /customers:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getCustomer
+      tags:
+        - Customer
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Tên để tìm kiếm
+          schema:
+            type: string
+        - name: code
+          in: query
+          description: Mã nhóm khách hàng
+          schema:
+            type: string
+        - name: phone
+          in: query
+          description: Số điện thoại
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: Email
+          schema:
+            type: string
+        - name: tax_code
+          in: query
+          description: Mã số thuế
+          schema:
+            type: string
+        - name: group_id
+          in: query
+          description: ID nhóm khách hàng
+          schema:
+            type: integer
+        - name: publish
+          in: query
+          description: Trạng thái công khai
+          schema:
+            type: boolean
+        - name: page
+          in: query
+          schema:
+            type: integer
+            example: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            example: 10
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Customer"
+    post:
+      summary: Tạo mới
+      operationId: createCustomer
+      tags:
+        - Customer
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Customer"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+  /customers/delete-rows/{id}:
+    delete:
+      summary: Xóa danh sách
+      operationId: deleteCustomer
+      tags:
+        - Customer
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /customers/{id}:
+    delete:
+      summary: Xóa
+      operationId: deleteCustomerId
+      tags:
+        - Customer
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+
+    patch:
+      summary: Cập nhật
+      operationId: updateCustomer
+      tags:
+        - Customer
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Customer"
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+  /customers/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: findCustomerById
+      tags:
+        - Customer
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+        "404":
+          description: Không tồn tại
+  /customers/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updateCustomerPublish
+      tags:
+        - Customer
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Customer"
+  /customers/update-list-publish:
+    put:
+      summary: Cập nhật danh sách trạng thái
+      operationId: updateListCustomerPublish
+      tags:
+        - Customer
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+  # Supplier
+  /suppliers:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getSupplier
+      tags:
+        - Supplier
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Tên để tìm kiếm
+          schema:
+            type: string
+        - name: status
+          in: query
+          description: Trạng thái công khai
+          schema:
+            type: boolean
+        - name: code
+          in: query
+          description: Mã nhóm khách hàng
+          schema:
+            type: string
+        - name: group_id
+          in: query
+          description: ID nhóm nhà cung cấp
+          schema:
+            type: integer
+        - name: email
+          in: query
+          description: Email
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Supplier"
+    post:
+      summary: Tạo mới
+      operationId: createSupplier
+      tags:
+        - Supplier
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Supplier"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Supplier"
+  /suppliers/delete-rows/{id}:
+    delete:
+      summary: Xóa danh sách
+      operationId: deleteSupplier
+      tags:
+        - Supplier
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /suppliers/{id}:
+    delete:
+      summary: Xóa
+      operationId: deleteSupplierId
+      tags:
+        - Supplier
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+
+    patch:
+      summary: Cập nhật
+      operationId: updateSupplier
+      tags:
+        - Supplier
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Supplier"
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Supplier"
+  /suppliers/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: findSupplierById
+      tags:
+        - Supplier
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Supplier"
+        "404":
+          description: Không tồn tại
+  /suppliers/update-status/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updatesupplierstatus
+      tags:
+        - Supplier
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Supplier"
+  /suppliers/update-list-status:
+    put:
+      summary: Cập nhật danh sách trạng thái
+      operationId: updateListsupplierstatus
+      tags:
+        - Supplier
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                status:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+  # Brand
+  /brand:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getBrand
+      tags:
+        - Brand
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Tên để tìm kiếm
+          schema:
+            type: string
+        - name: publish
+          in: query
+          description: Trạng thái công khai
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Brand"
+    post:
+      summary: Tạo mới
+      operationId: createBrand
+      tags:
+        - Brand
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Brand"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Brand"
+  /brand/delete-rows/{id}:
+    delete:
+      summary: Xóa danh sách
+      operationId: deleteBrand
+      tags:
+        - Brand
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /brand/{id}:
+    delete:
+      summary: Xóa
+      operationId: deleteBrandId
+      tags:
+        - Brand
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+    patch:
+      summary: Cập nhật
+      operationId: updateBrand
+      tags:
+        - Brand
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Tên
+                  example: "Tên mới"
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Brand"
+  /brand/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: findBrandById
+      tags:
+        - Brand
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Brand"
+        "404":
+          description: Không tồn tại
+  /brand/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updateBrandPublish
+      tags:
+        - Brand
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Brand"
+  /brand/update-list-publish:
+    put:
+      summary: Cập nhật danh sách trạng thái
+      operationId: updateListbrandpublish
+      tags:
+        - Brand
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+  # User
+  /users:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getUser
+      tags:
+        - User
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            example: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            example: 10
+        - name: name
+          in: query
+          description: Tên để tìm kiếm
+          schema:
+            type: string
+        - name: phone
+          in: query
+          description: Số điện thoại
+          schema:
+            type: string
+        - name: email
+          in: query
+          description: Email
+          schema:
+            type: string
+        - name: active
+          in: query
+          description: Trạng thái công khai
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+    post:
+      summary: Tạo mới
+      operationId: createUser
+      tags:
+        - User
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /users/delete-rows/{id}:
+    delete:
+      summary: Xóa danh sách
+      operationId: deleteUser
+      tags:
+        - User
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+    
+  /users/{id}:
+    delete:
+      summary: Xóa
+      operationId: deleteUserId
+      tags:
+        - User
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+
+    patch:
+      summary: Cập nhật
+      operationId: updateUser
+      tags:
+        - User
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /users/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: findUserById
+      tags:
+        - User
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: Không tồn tại
+  /users/update-active/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updateUseractive
+      tags:
+        - User
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+  /users/update-list-active:
+    put:
+      summary: Cập nhật danh sách trạng thái
+      operationId: updateListUseractive
+      tags:
+        - User
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                active:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+  # UserAddress
+  /user-address:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getUserAddress
+      tags:
+        - UserAddress
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: page
+          in: query
+          schema:
+            type: integer
+            example: 1
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            example: 10
+        - name: name
+          in: query
+          description: Tên để tìm kiếm
+          schema:
+            type: string
+        - name: phone
+          in: query
+          description: Số điện thoại
+          schema:
+            type: string
+        - name: city_id
+          in: query
+          description: ID tỉnh/thành phố
+          schema:
+            type: integer
+        - name: district_id
+          in: query
+          description: ID quận/huyện
+          schema:
+            type: integer
+        - name: ward_id
+          in: query
+          description: ID phường/xã
+          schema:
+            type: integer
+        - name: is_default
+          in: query
+          description: Địa chỉ mặc định
+          schema:
+            type: boolean
+        - name: customer_id
+          in: query
+          description: ID khách hàng
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/UserAddress"
+    post:
+      summary: Tạo mới
+      operationId: createUserAddress
+      tags:
+        - UserAddress
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAddress"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAddress"
+
+  /user-address/delete-rows/{id}:
+    delete:
+      summary: Xóa danh sách
+      operationId: deleteUserAddress
+      tags:
+        - UserAddress
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /user-address/{id}:
+    delete:
+      summary: Xóa
+      operationId: deleteUserAddressId
+      tags:
+        - UserAddress
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+    patch:
+      summary: Cập nhật
+      operationId: updateUserAddress
+      tags:
+        - UserAddress
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAddress"
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAddress"
+  /user-address/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: findUserAddressById
+      tags:
+        - UserAddress
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAddress"
+        "404":
+          description: Không tồn tại
+  /user-address/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updateUserAddresspublish
+      tags:
+        - UserAddress
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserAddress"
+  /user-address/update-list-publish:
+    put:
+      summary: Cập nhật danh sách trạng thái
+      operationId: updateListUserAddresspublish
+      tags:
+        - UserAddress
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+
+
+ # product-unit
+  /product-unit:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getproduct-unit
+      tags:
+        - ProductUnit
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Tên để tìm kiếm
+          schema:
+            type: string
+        - name: publish
+          in: query
+          description: Trạng thái công khai
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductUnit"
+    post:
+      summary: Tạo mới
+      operationId: createproduct-unit
+      tags:
+        - ProductUnit
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductUnit"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductUnit"
+  /product-unit/delete-rows/{id}:
+    delete:
+      summary: Xóa danh sách
+      operationId: deleteproduct-unit
+      tags:
+        - ProductUnit
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /product-unit/{id}:
+    delete:
+      summary: Xóa
+      operationId: deleteproduct-unitId
+      tags:
+        - ProductUnit
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+    patch:
+      summary: Cập nhật
+      operationId: updateproduct-unit
+      tags:
+        - ProductUnit
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Tên
+                  example: "Tên mới"
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductUnit"
+  /product-unit/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: findproduct-unitById
+      tags:
+        - ProductUnit
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductUnit"
+        "404":
+          description: Không tồn tại
+  /product-unit/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updateproduct-unitPublish
+      tags:
+        - ProductUnit
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductUnit"
+  /product-unit/update-list-publish:
+    put:
+      summary: Cập nhật danh sách trạng thái
+      operationId: updateListproduct-unitpublish
+      tags:
+        - ProductUnit
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+
+
+
+
+
+
+ # module
+  /module:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getmodule
+      tags:
+        - Module
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Tên để tìm kiếm
+          schema:
+            type: string
+        - name: publish
+          in: query
+          description: Trạng thái công khai
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Module"
+    post:
+      summary: Tạo mới
+      operationId: createmodule
+      tags:
+        - Module
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Module"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Module"
+  /module/delete-rows/{id}:
+    delete:
+      summary: Xóa danh sách
+      operationId: deletemodule
+      tags:
+        - Module
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /module/{id}:
+    delete:
+      summary: Xóa
+      operationId: deletemoduleId
+      tags:
+        - Module
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+    patch:
+      summary: Cập nhật
+      operationId: updatemodule
+      tags:
+        - Module
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Tên
+                  example: "Tên mới"
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Module"
+  /module/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: findmoduleById
+      tags:
+        - Module
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Module"
+        "404":
+          description: Không tồn tại
+  /module/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updatemodulePublish
+      tags:
+        - Module
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Module"
+  /module/update-list-publish:
+    put:
+      summary: Cập nhật danh sách trạng thái
+      operationId: updateListmodulepublish
+      tags:
+        - Module
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+
+
+
+
+ # product-type
+  /product-type:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getproduct-type
+      tags:
+        - ProductType
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Tên để tìm kiếm
+          schema:
+            type: string
+        - name: publish
+          in: query
+          description: Trạng thái công khai
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductType"
+    post:
+      summary: Tạo mới
+      operationId: createproduct-type
+      tags:
+        - ProductType
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductType"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductType"
+  /product-type/delete-rows/{id}:
+    delete:
+      summary: Xóa danh sách
+      operationId: deleteproduct-type
+      tags:
+        - ProductType
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /product-type/{id}:
+    delete:
+      summary: Xóa
+      operationId: deleteproduct-typeId
+      tags:
+        - ProductType
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+    patch:
+      summary: Cập nhật
+      operationId: updateproduct-type
+      tags:
+        - ProductType
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Tên
+                  example: "Tên mới"
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductType"
+  /product-type/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: findproduct-typeById
+      tags:
+        - ProductType
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductType"
+        "404":
+          description: Không tồn tại
+  /product-type/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updateproduct-typePublish
+      tags:
+        - ProductType
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductType"
+  /product-type/update-list-publish:
+    put:
+      summary: Cập nhật danh sách trạng thái
+      operationId: updateListproduct-typepublish
+      tags:
+        - ProductType
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+
+
+
+ # role
+  /role:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getrole
+      tags:
+        - Role
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Tên để tìm kiếm
+          schema:
+            type: string
+        - name: publish
+          in: query
+          description: Trạng thái công khai
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Role"
+    post:
+      summary: Tạo mới
+      operationId: createrole
+      tags:
+        - Role
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Role"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Role"
+  /role/delete-rows/{id}:
+    delete:
+      summary: Xóa danh sách
+      operationId: deleterole
+      tags:
+        - Role
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /role/{id}:
+    delete:
+      summary: Xóa
+      operationId: deleteroleId
+      tags:
+        - Role
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+    patch:
+      summary: Cập nhật
+      operationId: updaterole
+      tags:
+        - Role
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Tên
+                  example: "Tên mới"
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Role"
+  /role/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: findroleById
+      tags:
+        - Role
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Role"
+        "404":
+          description: Không tồn tại
+  /role/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updaterolePublish
+      tags:
+        - Role
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Role"
+  /role/update-list-publish:
+    put:
+      summary: Cập nhật danh sách trạng thái
+      operationId: updateListrolepublish
+      tags:
+        - Role
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+
+
+
+
+  /branch:
+    get:
+      summary: Tìm kiếm và lọc danh sách nhóm khách hàng
+      operationId: getBranch
+      tags:
+        - Branch
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Tên nhóm khách hàng để tìm kiếm
+          schema:
+            type: string
+        - name: publish
+          in: query
+          description: Trạng thái công khai của nhóm khách hàng
+          schema:
+            type: boolean
+        - name: code
+          in: query
+          description: Mã nhóm khách hàng
+          schema:
+            type: string
+        - name: is_default
+          in: query
+          description: Chỉ định xem nhóm khách hàng có phải là mặc định hay không
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Branch"
+
+    post:
+      summary: Tạo mới nhóm khách hàng
+      operationId: createBranch
+      tags:
+        - Branch
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Branch"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Branch"
+
+  /branch/delete-rows/{id}:
+    delete:
+      summary: Xóa nhiều nhóm khách hàng
+      operationId: deleteBranchs
+      tags:
+        - Branch
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /branch/{id}:
+    delete:
+      summary: Xóa
+      operationId: deleteBranchId
+      tags:
+        - Branch
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+    patch:
+      summary: Cập nhật nhóm khách hàng
+      operationId: updateBranch
+      tags:
+        - Branch
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của nhóm khách hàng cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Tên nhóm khách hàng
+                  example: "Nhóm mới"
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai của nhóm khách hàng
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Branch"
+
+  /branch/findById/{id}:
+    get:
+      summary: Tìm kiếm nhóm khách hàng theo ID
+      operationId: findBranchById
+      tags:
+        - Branch
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của nhóm khách hàng cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Nhóm khách hàng tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Branch"
+        "404":
+          description: Nhóm khách hàng không tồn tại
+
+  /branch/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái nhóm khách hàng
+      operationId: updateBranchPublish
+      tags:
+        - Branch
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của nhóm khách hàng cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Branch"
+  /branch/update-list-publish:
+    put:
+      summary: Cập nhật trạng thái nhiều nhóm khách hàng
+      operationId: updateListBranchPublish
+      tags:
+        - Branch
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+
+
+
+  /delivery-note:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getdelivery-note
+      tags:
+        - DeliveryNote
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DeliveryNote"
+
+    post:
+      summary: Tạo mới
+      operationId: createdelivery-note
+      tags:
+        - DeliveryNote
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeliveryNote"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryNote"
+
+  /delivery-note/delete-rows/{id}:
+    delete:
+      summary: Xóa nhiều
+      operationId: deletedelivery-notes
+      tags:
+        - DeliveryNote
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /delivery-note/{id}:
+    delete:
+      summary: Xóa
+      operationId: deleteDeliveryNoteId
+      tags:
+        - DeliveryNote
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+    patch:
+      summary: Cập nhật
+      operationId: updatedelivery-note
+      tags:
+        - DeliveryNote
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Tên
+                  example: "Nhóm mới"
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai của
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryNote"
+
+  /delivery-note/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: finddelivery-noteById
+      tags:
+        - DeliveryNote
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryNote"
+        "404":
+          description: không tồn tại
+
+  /delivery-note/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updatedelivery-notePublish
+      tags:
+        - DeliveryNote
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryNote"
+  /delivery-note/update-list-publish:
+    put:
+      summary: Cập nhật trạng thái nhiều
+      operationId: updateListdelivery-notePublish
+      tags:
+        - DeliveryNote
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+
+  /delivery-note/report-delivery:
+    get: 
+      summary: Báo cáo phiếu xuất
+      operationId: reportDeliveryNote
+      tags:
+        - DeliveryNote
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: fromDate
+          in: query
+          description: Ngày bắt đầu
+          schema:
+            type: string
+            format: date
+          example: 2024-09-13
+        - name: toDate
+          in: query
+          description: Ngày kết thúc
+          schema:
+            type: string
+            format: date
+          example: 2024-09-20
+        - name: date
+          in: query
+          description: Ngày tạo
+          schema:
+            type: string
+          example: 2024-09-13
+      responses:
+        "200":
+          description: Báo cáo phiếu xuất
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DeliveryNote"
+
+
+  /delivery-note-detail:
+    get:
+      summary: Tìm kiếm và lọc danh sách 
+      operationId: getdelivery-note-detail
+      tags:
+        - DeliveryNoteDetail
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DeliveryNote"
+
+    post:
+      summary: Tạo mới 
+      operationId: createdelivery-note-detail
+      tags:
+        - DeliveryNoteDetail
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DeliveryNote"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryNote"
+
+  /delivery-note-detail/delete-rows/{id}:
+    delete:
+      summary: Xóa nhiều 
+      operationId: deletedelivery-note-details
+      tags:
+        - DeliveryNoteDetail
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /delivery-note-detail/{id}:
+    delete:
+      summary: Xóa
+      operationId: deleteDeliveryNoteDetailId
+      tags:
+        - DeliveryNoteDetail
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+    patch:
+      summary: Cập nhật 
+      operationId: updatedelivery-note-detail
+      tags:
+        - DeliveryNoteDetail
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của  cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Tên 
+                  example: "Nhóm mới"
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai của 
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryNote"
+
+  /delivery-note-detail/findById/{id}:
+    get:
+      summary: Tìm kiếm  theo ID
+      operationId: finddelivery-note-detailById
+      tags:
+        - DeliveryNoteDetail
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của  cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description:  tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryNote"
+        "404":
+          description:  không tồn tại
+
+  /delivery-note-detail/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái 
+      operationId: updatedelivery-note-detailPublish
+      tags:
+        - DeliveryNoteDetail
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của  cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DeliveryNote"
+  /delivery-note-detail/update-list-publish:
+    put:
+      summary: Cập nhật trạng thái nhiều 
+      operationId: updateListdelivery-note-detailPublish
+      tags:
+        - DeliveryNoteDetail
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+
+
+
+
+# city
+  /city:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getcity
+      tags:
+        - City
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Tên để tìm kiếm
+          schema:
+            type: string
+        - name: publish
+          in: query
+          description: Trạng thái công khai
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/City"
+    post:
+      summary: Tạo mới
+      operationId: createcity
+      tags:
+        - City
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/City"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/City"
+  /city/delete-rows/{id}:
+    delete:
+      summary: Xóa danh sách
+      operationId: deletecity
+      tags:
+        - City
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /city/{id}:
+    delete:
+      summary: Xóa
+      operationId: deletecityId
+      tags:
+        - City
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+    patch:
+      summary: Cập nhật
+      operationId: updatecity
+      tags:
+        - City
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Tên
+                  example: "Tên mới"
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/City"
+  /city/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: findcityById
+      tags:
+        - City
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/City"
+        "404":
+          description: Không tồn tại
+  /city/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updatecityPublish
+      tags:
+        - City
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/City"
+  /city/update-list-publish:
+    put:
+      summary: Cập nhật danh sách trạng thái
+      operationId: updateListcitypublish
+      tags:
+        - City
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+
+
+
+
+# district
+  /district:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getdistrict
+      tags:
+        - District
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Tên để tìm kiếm
+          schema:
+            type: string
+        - name: publish
+          in: query
+          description: Trạng thái công khai
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/District"
+    post:
+      summary: Tạo mới
+      operationId: createdistrict
+      tags:
+        - District
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/District"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/District"
+  /district/delete-rows/{id}:
+    delete:
+      summary: Xóa danh sách
+      operationId: deletedistrict
+      tags:
+        - District
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /district/{id}:
+    delete:
+      summary: Xóa
+      operationId: deletedistrictId
+      tags:
+        - District
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+    patch:
+      summary: Cập nhật
+      operationId: updatedistrict
+      tags:
+        - District
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Tên
+                  example: "Tên mới"
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/District"
+  /district/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: finddistrictById
+      tags:
+        - District
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/District"
+        "404":
+          description: Không tồn tại
+  /district/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updatedistrictPublish
+      tags:
+        - District
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/District"
+  /district/update-list-publish:
+    put:
+      summary: Cập nhật danh sách trạng thái
+      operationId: updateListdistrictpublish
+      tags:
+        - District
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+
+
+
+# ward
+  /ward:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getward
+      tags:
+        - Ward
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Tên để tìm kiếm
+          schema:
+            type: string
+        - name: publish
+          in: query
+          description: Trạng thái công khai
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Ward"
+    post:
+      summary: Tạo mới
+      operationId: createward
+      tags:
+        - Ward
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Ward"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ward"
+  /ward/delete-rows/{id}:
+    delete:
+      summary: Xóa danh sách
+      operationId: deleteward
+      tags:
+        - Ward
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /ward/{id}:
+    delete:
+      summary: Xóa
+      operationId: deletewardId
+      tags:
+        - Ward
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+    patch:
+      summary: Cập nhật
+      operationId: updateward
+      tags:
+        - Ward
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Tên
+                  example: "Tên mới"
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ward"
+  /ward/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: findwardById
+      tags:
+        - Ward
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ward"
+        "404":
+          description: Không tồn tại
+  /ward/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updatewardPublish
+      tags:
+        - Ward
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Ward"
+  /ward/update-list-publish:
+    put:
+      summary: Cập nhật danh sách trạng thái
+      operationId: updateListwardpublish
+      tags:
+        - Ward
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+
+
+
+
+
+ # product-commission
+  /product-commission:
+    get:
+      summary: Tìm kiếm và lọc danh sách
+      operationId: getproduct-commission
+      tags:
+        - ProductCommission
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: key
+          in: query
+          description: key search
+          schema:
+            type: string
+        - name: name
+          in: query
+          description: Tên để tìm kiếm
+          schema:
+            type: string
+        - name: publish
+          in: query
+          description: Trạng thái công khai
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: Tìm thấy danh sách
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProductCommission"
+    post:
+      summary: Tạo mới
+      operationId: createproduct-commission
+      tags:
+        - ProductCommission
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductCommission"
+      responses:
+        "200":
+          description: Tạo mới thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductCommission"
+  /product-commission/delete-rows/{id}:
+    delete:
+      summary: Xóa danh sách
+      operationId: deleteproduct-commission
+      tags:
+        - ProductCommission
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3, 4]
+      responses:
+        "200":
+          description: Xóa thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Xóa thành công."
+  /product-commission/{id}:
+    delete:
+      summary: Xóa
+      operationId: deleteproduct-commissionId
+      tags:
+        - ProductCommission
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần xóa
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Xóa thành công
+    patch:
+      summary: Cập nhật
+      operationId: updateproduct-commission
+      tags:
+        - ProductCommission
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần cập nhật
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Tên
+                  example: "Tên mới"
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductCommission"
+  /product-commission/findById/{id}:
+    get:
+      summary: Tìm kiếm theo ID
+      operationId: findproduct-commissionById
+      tags:
+        - ProductCommission
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID cần tìm kiếm
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Tìm thấy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductCommission"
+        "404":
+          description: Không tồn tại
+  /product-commission/update-publish/{id}:
+    put:
+      summary: Cập nhật trạng thái
+      operationId: updateproduct-commissionPublish
+      tags:
+        - ProductCommission
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID của cần cập nhật
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductCommission"
+  /product-commission/update-list-publish:
+    put:
+      summary: Cập nhật danh sách trạng thái
+      operationId: updateListproduct-commissionpublish
+      tags:
+        - ProductCommission
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                listId:
+                  type: array
+                  items:
+                    type: integer
+                  example: [1, 2, 3]
+                publish:
+                  type: boolean
+                  description: Trạng thái công khai mới
+                  example: true
+      responses:
+        "200":
+          description: Cập nhật trạng thái thành công
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Cập nhật trạng thái thành công."
+
+
+
+
+
+

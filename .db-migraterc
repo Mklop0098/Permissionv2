@@ -1,0 +1,5 @@
+{
+  "configFile": "src/core/config/migrate-config.js",
+  "migrations-dir": "src/core/migrations",
+  "ts": true
+}
