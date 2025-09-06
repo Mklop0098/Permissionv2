@@ -15,10 +15,10 @@ class EvaluateController {
         const listImage = req.files;
         try {
             const result = await this.evaluateServices.create(model, listImage)
-            return sendResponse(res, 200, message.CREATE_SUCCESS, result);
+            return sendResponse(res, 200, "Thêm đánh giá thành công", result);
         } catch (error) {
             if (error instanceof Error)
-                return sendResponse(res, 500, error.message);
+                return sendResponse(res, 400, error.message);
             if (error instanceof HttpException)
                 return sendResponse(res, error.status, error.message);
             next(error);
@@ -26,7 +26,6 @@ class EvaluateController {
     }
 
     public upload = async (req: Request, res: Response, next: NextFunction) => {
-        console.log(req.files);
         const listImage = req.files;
         const order_id = req.params.order_id as any;
         const cmtId = req.body.cmtId as any;
@@ -95,7 +94,7 @@ class EvaluateController {
         const listImage = req.files;
         try {
             const result = await this.evaluateServices.update(model, listImage);
-            return sendResponse(res, 200, message.UPDATE_SUCCESS, result);
+            return sendResponse(res, 200, "Cập nhật đánh giá thành công", result);
         } catch (error) {
             if (error instanceof HttpException)
                 return sendResponse(res, error.status, error.message);
@@ -127,6 +126,37 @@ class EvaluateController {
             return sendResponse(res, 200, message.GET_SUCCESS, result);
         }
 
+        catch (error) {
+            if (error instanceof HttpException)
+                return sendResponse(res, error.status, error.message);
+            if (error instanceof Error)
+                return sendResponse(res, 500, error.message);
+            next(error)
+        }
+    }
+
+    public checkEvaluated = async (req: Request, res: Response, next: NextFunction) => {
+        const order_id = req.query.order_id as any;
+        const customer_id = req.query.user_id as any;
+        try {
+            const result = await this.evaluateServices.checkEvaluated(customer_id, order_id);
+            return sendResponse(res, 200, message.GET_SUCCESS, result);
+        }
+        catch (error) {
+            if (error instanceof HttpException)
+                return sendResponse(res, error.status, error.message);
+            if (error instanceof Error)
+                return sendResponse(res, 500, error.message);
+            next(error)
+        }
+    }
+
+    public getSellerEvaluate = async (req: Request, res: Response, next: NextFunction) => {
+        const seller_id = req.params.id as any;
+        try {
+            const result = await this.evaluateServices.getSellerEvaluate(seller_id);
+            return sendResponse(res, 200, message.GET_SUCCESS, result);
+        }
         catch (error) {
             if (error instanceof HttpException)
                 return sendResponse(res, error.status, error.message);

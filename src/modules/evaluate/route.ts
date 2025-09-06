@@ -26,6 +26,8 @@ class EvaluateRoute implements IRoute {
             this.evaluateController.create
         )
 
+        this.router.get(this.path + '/check-evaluated', this.evaluateController.checkEvaluated)
+        this.router.get(this.path + '/seller-evaluate/:id', this.evaluateController.getSellerEvaluate)
         this.router.get(this.path + '/:order_id', AuthMiddleware.authorizationStrict(), this.evaluateController.findByOrderId)
         this.router.get(this.path + '/get-all/:product_id', AuthMiddleware.authorization(), this.evaluateController.findAllByProductId)
         this.router.delete(this.path + '/delete-one/:id', AuthMiddleware.authorizationStrict(), this.evaluateController.deleteOneImage)

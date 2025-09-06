@@ -14,7 +14,7 @@ class LikeRatingController {
         model.customer_id = req.id as number;
         try {
             const result = await this.likeRatingServices.likeRating(model);
-            return sendResponse(res, 200, message.CREATE_SUCCESS, result);
+            return sendResponse(res, 200, "Bạn đã thích bình luận này", result);
         }
         catch (error) {
             if (error instanceof HttpException)

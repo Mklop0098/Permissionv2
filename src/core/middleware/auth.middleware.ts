@@ -15,9 +15,8 @@ class AuthMiddleware {
     // }
     public static authorization = (isCheckPermission = false) => {
         return async (req: Request, res: Response, next: NextFunction) => {
-            console.log(req.header('Authorization'));
             const token = req.header('Authorization')?.replace('Bearer ', '');
-            if (!token) {
+            if (!token || token === 'undefined' || token === 'null' || token === '' || token === undefined || token === null) {
                 next()
             }
             else {
@@ -38,10 +37,9 @@ class AuthMiddleware {
                 try {
                     const response = await axios.post(`${process.env.SERVER_AUTH_URL}/api/v1/auth/check-token`, body)
                     if (response.status === 200) {
-                        req.id = response.data.data.id;
-                        req.seller_id = response.data.data.seller_id;
-                        req.ref_id = response.data.data.ref_id;
-                        req.type = response.data.data.type;
+                        req.id = response.data.id;
+                        req.seller_id = response.data.seller_id;
+                        req.role_id = response.data.role_id;
                     }
                     next();
                 } catch (error) {
@@ -55,7 +53,7 @@ class AuthMiddleware {
     public static authorizationStrict = (isCheckPermission: boolean = false) => {
         return async (req: Request, res: Response, next: NextFunction) => {
             const token = req.header('Authorization')?.replace('Bearer ', '');
-            if (!token) {
+            if (!token || token === 'undefined' || token === 'null' || token === '' || token === undefined || token === null) {
                 return sendResponse(res, 400, 'Vui lòng đăng nhập');
             }
             else {
@@ -75,13 +73,10 @@ class AuthMiddleware {
                 }
                 try {
                     const response = await axios.post(`${process.env.SERVER_AUTH_URL}/api/v1/auth/check-token`, body)
-                    console.log(response.data);
                     if (response.status === 200) {
-                        req.id = response.data.data.id;
-                        req.seller_id = response.data.data.seller_id;
-                        req.ref_id = response.data.data.ref_id;
-                        req.type = response.data.data.type;
-                        req.role_id = response.data.data.role_id;
+                        req.id = response.data.id;
+                        req.seller_id = response.data.seller_id;
+                        req.role_id = response.data.role_id;
                     }
                     next();
                 } catch (error) {

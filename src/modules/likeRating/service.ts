@@ -12,15 +12,16 @@ class LikeRatingServices {
                 WHERE evaluate_id = ? AND customer_id = ? AND product_id = ? AND source = ?`, [model.evaluate_id, model.customer_id, model.product_id, process.env.SOURCE!]);
                 
             console.log(checkExist);
+            
             if (checkExist.length > 0) {
-                const query = `UPDATE ${this.tableName} SET \`like\` = ? WHERE evaluate_id = ? AND customer_id = ? AND product_id = ? AND source = ?`;
-                await connection.execute<ResultSetHeader>(query, [model.like, model.evaluate_id, model.customer_id, model.product_id, process.env.SOURCE!]);
+                const query = `UPDATE ${this.tableName} SET \`like\` = ${checkExist[0].like == 1 ? 0 : 1} WHERE evaluate_id = ? AND customer_id = ? AND product_id = ? AND source = ?`;
+                await connection.execute<ResultSetHeader>(query, [model.evaluate_id, model.customer_id, model.product_id, process.env.SOURCE!]);
             } else {
                 const query = `
                     INSERT INTO ${this.tableName} (evaluate_id, customer_id, product_id, source, \`like\`)
                     VALUES (?, ?, ?, ?, ?)
                 `;
-                await connection.execute<ResultSetHeader>(query, [model.evaluate_id, model.customer_id, model.product_id, process.env.SOURCE!, model.like]);
+                await connection.execute<ResultSetHeader>(query, [model.evaluate_id, model.customer_id, model.product_id, process.env.SOURCE!, 1]);
             }
         }, conn);
     }

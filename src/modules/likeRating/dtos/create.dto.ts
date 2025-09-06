@@ -10,10 +10,6 @@ export class LikeRating {
     @IsNumber()
     @IsNotEmpty({ message: 'Không tìm thấy sản phẩm' })
     product_id?: number;
-
-    @IsNotEmpty({ message: 'Like không được để trống' })
-    @IsIn([0, 1], { message: 'Like phải là 0 hoặc 1' })
-    like?: number;
     source?: string;
 
     constructor(evaluate_id: number, customer_id: number, product_id: number, source?: string) {
